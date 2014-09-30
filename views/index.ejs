@@ -1,0 +1,94 @@
+<html>
+<head>
+	<title>Angular App Post</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js">
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+	<script src="/javascripts/angularApp.js"></script>
+</head>
+
+<body ng-app="news" ng-controller="main">
+	<!--Show all post-->
+	<div class="row"><!-- first row-->
+		<div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12" ><!--centred-->
+			<ui-view></ui-view>
+
+			<!-------Starts Home Template -------->
+			<script type="text/ng-template" id="/home.html">
+			<h1>News</h1>
+			<div ng-repeat="post in posts | orderBy: '-votes'">
+			<span style="font-size:20px; margin-left:10px;">
+			<a ng-show="post.link" href="{{post.link}}">
+			{{post.title}}
+			</a>
+			<span ng-hide="post.link">
+			{{post.title}}
+			</span>
+			</span> 
+
+
+			<span  class="glyphicon glyphicon-thumbs-up"
+			ng-click="upVote(post)"></span>
+			{{post.votes}}
+
+			<span>
+  <a href="#/posts/{{post._id}}">Comments </a>
+  <!--{{posts.indexOf(post)}}-->
+</span>
+			</div>
+
+
+
+
+			<!--Create new posts -->
+			<form  class="col-md-offset-2 col-md-6" style="margin-top:30px" ng-submit="addPost()">
+			<h3>Add a new post</h3>
+			<div class="form-group" >
+			<input class="form-control" type="text" placeholder="Title" ng-model="newPost" />
+			</div>
+			<div class="form-group">
+			<input class="form-control" type="text" placeholder="Link" ng-model="link" />
+			</div>
+			<button class="btn btn-primary" type="submit">Post</button>
+			</form>
+
+
+
+<!-------Starts Post Template -------->
+			<script type="text/ng-template" id="/posts.html">
+			<div class="page-header">
+			<h3> <a ng-show="post.link" href="{{post.link}}" >{{post.title}}
+			</a>
+			<span ng-hide="post.link">
+			{{post.title}}
+			</span> </h3>
+			</div>
+			<div ng-repeat="comment in post.comments | orderBy: '-votes'">
+			<span style="font-size:14px; margin-left:10px;" >
+			{{comment.body}}
+			</span>
+				- by {{comment.author}} - votes {{comment.votes}}
+			</div>
+			<form ng-submit="addComment()"
+    style="margin-top:30px;">
+    <h3>Add a new comment</h3>
+
+    <div class="form-group">
+      <input type="text"
+      class="form-control"
+      placeholder="Comment"
+      ng-model="body"></input>
+    </div>
+    <button type="submit" class="btn btn-primary">Comment</button>
+  </form>
+			</script>
+		</script>
+	</div>
+</div>
+</body>
+</html>
+
